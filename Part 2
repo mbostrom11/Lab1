@@ -1,0 +1,68 @@
+---
+title: "Part 2"
+author: "Marco Bostrom"
+date: "4/10/2020"
+output: html_document
+---
+1.
+```{r }
+Oscars = read.csv("/Users/MarcoB/Desktop/Advanced R/Oscars-demographics-DFE.csv")
+library(dplyr)
+Oscars %>%
+  group_by(movie) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+
+```
+2.
+```{r }
+library(dplyr)
+library(tidyr)
+Oscars %>%
+  filter(award == "Best Actress") %>%
+  separate(person, c("first", "last"), sep = " ") %>%
+  group_by(first)%>%
+  summarise(n= n())%>%
+  arrange(desc(n))
+```
+3.
+```{r }
+library(dplyr)
+Oscars %>%
+  group_by(birthplace) %>%
+  separate(birthplace, c("city", "state"), sep = ",") %>%
+  replace_na(list("Ny"))%>%
+  group_by(state) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+```
+Part 1
+```{r }
+library(dplyr)
+linear = Oscars%>%
+  separate(date_of_birth, c("birth_day", "birth_month","birth_year"), sep = "-") %>%
+  mutate(birth_year1 = as.numeric(birth_year)) %>%
+  mutate(age_won = year_of_award - birth_year1)
+linear
+model = lm(linear$year_of_award ~ linear$age_won)
+plot(linear$year_of_award, linear$age_won)
+abline(model$coefficients, col = "blue")
+
+
+```
+Part 2
+```{r }
+library(dplyr)
+Oscars %>%
+  group_by(race_ethnicity) %>%
+  summarise(n= n())
+
+sample_sd = sd(c(30,411))
+error <- qnorm(0.95)*sample_sd/sqrt(441) / 441
+percent_mean=30/441
+lb= percent_mean - error
+ub= percent_mean + error
+confidence = c(lb, ub)
+#(0.0202, 0.1159)
+```
+

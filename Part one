@@ -1,0 +1,30 @@
+---
+title: "Part 1"
+author: "Marco Bostrom"
+date: "4/10/2020"
+output: html_document
+---
+
+```{r }
+qqplot = function(test){
+  mean_test = mean(test)
+  sd_test = sd(test)
+  
+  y = rnorm(n = length(test), mean = mean_test,sd = sd_test)
+  #using r norm to gather a b=normall distributed sample based on our means and sd
+ 
+  #fiting regression based on vectors
+  fit = lm(y~test)
+  #create q-q plot
+  plot(test,y)
+  abline(fit$coefficients, col = "red")
+}
+
+test = c(3, 10, 6, 7, 8, 9, 2, 9, 4, 5, 8, 8, 8, 10, 2, 10, 10, 2, 8, 7)
+qqplot(test)
+  
+
+```
+
+
+
